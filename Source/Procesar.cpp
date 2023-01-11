@@ -51,7 +51,7 @@ void Procesar::processBlock(juce::AudioBuffer<float>& buffer,
 
 	const auto tanC = std::tan(PI * 1500 / samplingRate);
 	const auto a1C = (tanC - 1.f) / (tanC + 1.f);
-
+	/*
 	//modelo del clipeo de diodo 1n4148 y 10k (DOD 250)
 	float vInSilicio[15] = { 0,0.075,0.181,0.246,0.406,0.534,0.681,0.893,1.130,1.360,1.780,2.250,2.840,3.500,5.020 };
 	float vOutSilicio[15] = { 0,0.075,0.179,0.238,0.358,0.401,0.433,0.460,0.479,0.494,0.512,0.526,0.541,0.553,0.572 };
@@ -82,6 +82,7 @@ void Procesar::processBlock(juce::AudioBuffer<float>& buffer,
 		}
 
 	}
+	*/
 
 	gain = juce::Decibels::decibelsToGain(gain, -60.0f);
 	vol = juce::Decibels::decibelsToGain(vol, -60.0f);
@@ -117,11 +118,13 @@ void Procesar::processBlock(juce::AudioBuffer<float>& buffer,
 			//Distorsion
 
 			float señal =  gain * filterOutput3;
-			float auxiliar;
+			//float auxiliar;
 			float outDistor = 0;
 
+			/*
 			int signo = 0;  //supongo positivo
 
+			
 			if (señal < 0) {
 				signo = 1;
 				señal = -señal;
@@ -144,6 +147,26 @@ void Procesar::processBlock(juce::AudioBuffer<float>& buffer,
 
 					outDistor = auxiliar ;
 				}
+			}
+			*/
+
+			//en lugar de tabla uso paroximaciones a la curva
+
+
+
+			if (señal >= 5.0f)
+				señal = 5.0f;  //simula hard-clipping del AO
+			if (señal <= -5.0f)
+				señal = -5.0f;  //simula hard-clipping del AO
+
+			if (silicon == 1)
+			{
+				outDistor = 0.355 * atan(3.6 * señal) + señal / 140; 
+			}
+			else
+			{
+				outDistor = 0.115 * atan(3.5 * señal) + señal / 50;
+
 			}
 
 

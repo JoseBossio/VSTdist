@@ -100,7 +100,7 @@ void VSTdistAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
-    //g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawFittedText ("V2.0", getLocalBounds(), juce::Justification::bottomRight, 1);
 }
 
 void VSTdistAudioProcessorEditor::resized()
